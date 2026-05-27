@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        AWS_REGION = 'ap-south-1' 
-        S3_BUCKET = 'sourav-codedeploy-bucket'
-        APPLICATION_NAME = 'Microservice-App'
+   environment {
+        AWS_REGION = 'ap-south-2' 
+        S3_BUCKET = 'sourav-codedeploy-bucket-2026' // Match your exact bucket name here
+        APPLICATION_NAME = 'sourav-Microservice-App' // Matches your AWS application name exactly
         DEPLOYMENT_GROUP = 'Microservice-DG'
     }
 
