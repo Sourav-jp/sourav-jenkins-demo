@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-   environment {
+    environment {
         AWS_REGION = 'ap-south-2' 
         S3_BUCKET = 'sourav-codedeploy-bucket-2026' // Match your exact bucket name here
         APPLICATION_NAME = 'sourav-Microservice-App' // Matches your AWS application name exactly
@@ -27,10 +27,8 @@ pipeline {
             steps {
                 // Triggers CodeDeploy using the AWS credentials configured inside Jenkins
                 step([$class: 'AWSCodeDeployPublisher',
-                    awsAccessKeyId: '', 
-                    awsSecretKey: '', 
                     credentialsId: 'aws-credentials-id', 
-                    deploymentConfigName: 'CodeDeployDefault.OneAtATime',
+                    deploymentConfigName: 'CodeDeployDefault.AllAtOnce',
                     deploymentGroupName: "${DEPLOYMENT_GROUP}",
                     applicationName: "${APPLICATION_NAME}",
                     s3bucket: "${S3_BUCKET}",
@@ -38,8 +36,10 @@ pipeline {
                     subfolder: '',
                     includes: 'deployment-package.zip',
                     region: "${AWS_REGION}",
-                    version: true,
-                    waitForOperations: true
+                    version: false,
+                    waitForOperations: true,
+                    deploymentGroupAppspec: false,
+                    useAccessKey: false
                 ])
             }
         }
