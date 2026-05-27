@@ -25,22 +25,17 @@ pipeline {
 
         stage('Deploy to AWS CodeDeploy') {
             steps {
-                // Triggers CodeDeploy using the AWS credentials configured inside Jenkins
-                step([$class: 'AWSCodeDeployPublisher',
-                    credentialsId: 'aws-credentials-id', 
-                    deploymentConfigName: 'CodeDeployDefault.AllAtOnce',
-                    deploymentGroupName: "${DEPLOYMENT_GROUP}",
-                    applicationName: "${APPLICATION_NAME}",
-                    s3bucket: "${S3_BUCKET}",
-                    s3prefix: '',
-                    subfolder: '',
-                    includes: 'deployment-package.zip',
+                // Native block to handle token routing properly
+                awsCodeDeploy(
+                    credentialsId: 'aws-credentials-id',
                     region: "${AWS_REGION}",
-                    version: false,
-                    waitForOperations: true,
-                    deploymentGroupAppspec: false,
-                    useAccessKey: true
-                ])
+                    applicationName: "${APPLICATION_NAME}",
+                    deploymentGroupName: "${DEPLOYMENT_GROUP}",
+                    deploymentConfig: 'CodeDeployDefault.AllAtOnce',
+                    s3Bucket: "${S3_BUCKET}",
+                    includes: 'deployment-package.zip',
+                    waitForOperations: true
+                )
             }
         }
     }
