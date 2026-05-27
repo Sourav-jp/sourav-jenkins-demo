@@ -39,7 +39,7 @@ pipeline {
                     version: false,
                     waitForOperations: true,
                     deploymentGroupAppspec: false,
-                    useAccessKey: false
+                    useAccessKey: true
                 ])
             }
         }
